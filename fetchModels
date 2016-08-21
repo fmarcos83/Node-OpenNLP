@@ -1,0 +1,4 @@
+#!/bin/bash
+version=$1
+language=$2
+$(wget -r --no-parent --cut-dirs=4 -nH -A "$language-*.bin" "http://opennlp.sourceforge.net/models-$version/" -P ./models/nl/)
