@@ -44,12 +44,22 @@ The following default configurations can be overrided during initialization.
 var openNLP = require("opennlp");
 var opennlp = new openNLP({
     models : {
-        doccat:__dirname + '/models/en-doccat.bin',
-        posTagger: __dirname + '/models/en-pos-maxent.bin',
-        tokenizer: __dirname + '/models/en-token.bin',
-        nameFinder: __dirname + '/models/en-ner-person.bin',
-        sentenceDetector: __dirname + '/models/en-sent.bin',
-        chunker: __dirname + '/models/en-chunker.bin'
+        "en":{
+            doccat:__dirname + '/models/en/en-doccat.bin',
+            posTagger: __dirname + '/models/en/en-pos-maxent.bin',
+            tokenizer: __dirname + '/models/en/en-token.bin',
+            nameFinder: __dirname + '/models/en/en-ner-person.bin',
+            sentenceDetector: __dirname + '/models/en/en-sent.bin',
+            chunker: __dirname + '/models/en/en-chunker.bin'
+        },
+        "nl":{
+            doccat:__dirname + '/models/nl/nl-doccat.bin',
+            posTagger: __dirname + '/models/nl/nl-pos-maxent.bin',
+            tokenizer: __dirname + '/models/nl/nl-token.bin',
+            nameFinder: __dirname + '/models/nl-ner-person.bin',
+            sentenceDetector: __dirname + '/models/nl-sent.bin',
+            chunker: __dirname + '/models/en/en-chunker.bin'
+        }
     },
     openNLP = {
         jar: __dirname + "/lib/opennlp-tools-1.6.0.jar"
@@ -64,7 +74,7 @@ The OpenNLP Tokenizers segment an input character sequence into tokens. Tokens a
 ```Javascript
 var openNLP = require("opennlp");
 var sentence = 'Pierre Vinken , 61 years old , will join the board as a nonexecutive director Nov. 29 .';
-var tokenizer = new openNLP().tokenizer;
+var tokenizer = new openNLP().tokenizer('nl');
 tokenizer.tokenize(sentence, function(err, results) {
     console.log(err, results);
     tokenizer.getTokenProbabilities(function(error, response) {
@@ -80,7 +90,7 @@ The Name Finder can detect named entities and numbers in text. To be able to det
 ```Javascript
 var openNLP = require("opennlp");
 var sentence = 'Pierre Vinken , 61 years old , will join the board as a nonexecutive director Nov. 29 .';
-var nameFinder = new openNLP().nameFinder;
+var nameFinder = new openNLP().nameFinder('nl');
 nameFinder.find(sentence, function(err, tokens_arr) {
     console.log(err, tokens_arr)
     nameFinder.probs(function(error, response) {
@@ -97,7 +107,7 @@ The OpenNLP Document Categorizer can classify text into pre-defined categories. 
 ** To use the document categorizer you need to train a model first. The default trained model that is included is for testing purposes only. **
 ```Javascript
 var openNLP = require("opennlp");
-var doccat = new openNLP().doccat;
+var doccat = new openNLP().doccat('nl');
 doccat.categorize("I enjoyed watching Rocky", function(err, list) {
     doccat.getAllResults(list, function(err, category) {
     });
@@ -135,9 +145,9 @@ Text chunking consists of dividing a text in syntactically correlated parts of w
 
 ```Javascript
 var openNLP = require("opennlp");
-var posTagger = new openNLP().posTagger;
+var posTagger = new openNLP().posTagger('nl');
 var sentence = 'Pierre Vinken , 61 years old , will join the board as a nonexecutive director Nov. 29 .';
-var chunker = new openNLP().chunker;
+var chunker = new openNLP().chunker();
 posTagger.tag(sentence, function(err, tokens_arr) {
     chunker.topKSequences(sentence, tokens_arr, function(err, tokens_arr) {
       console.log(err, tokens_arr)
